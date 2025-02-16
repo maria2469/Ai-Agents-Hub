@@ -24,10 +24,14 @@ const ResponsePage = ({ crew }) => {
       },
     };
 
+    console.log("Request Data:", requestData);  // Log the request data
+
     let rawOutput = '';
 
     try {
       const apiUrl = "https://unifiedagents-production-a542.up.railway.app/execute_crew/";
+      console.log("Sending request to:", apiUrl);  // Log the API URL
+
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -41,12 +45,15 @@ const ResponsePage = ({ crew }) => {
       }
 
       const responseData = await response.json();
+      console.log("Raw Response Data:", responseData);  // Log the raw response
+
       rawOutput = responseData?.output?.raw || "No raw output available";
 
       // Try parsing if it's JSON
       let parsedOutput = rawOutput;
       try {
         parsedOutput = JSON.parse(rawOutput); // Try parsing if it's JSON
+        console.log("Parsed Output:", parsedOutput);  // Log parsed output
       } catch (error) {
         console.error("Error parsing response:", error);
       }
@@ -68,6 +75,8 @@ const ResponsePage = ({ crew }) => {
 
 
   const renderAgentForm = () => {
+    console.log("Rendering form for crew:", crew.name);  // Log which agent form is being rendered
+
     if (crew.name === "financial reporter") {
       return <FinancialReporterAgent onSubmit={handleSubmit} />;
     }
@@ -93,13 +102,22 @@ const ResponsePage = ({ crew }) => {
   };
 
   const renderResponseContent = (response) => {
+    let parsedResponse = response;
 
+    // Attempt to parse if response is a JSON string
+    if (typeof response === "string") {
+      try {
+        parsedResponse = JSON.parse(response);
+      } catch (error) {
+        console.error("Error parsing response:", error);
+      }
+    }
 
-    // If response is an array (usually parsed JSON), display articles
-    if (Array.isArray(response)) {
+    // If parsedResponse is an array, render it properly
+    if (Array.isArray(parsedResponse)) {
       return (
         <div>
-          {response.map((article, index) => (
+          {parsedResponse.map((article, index) => (
             <div
               key={index}
               className="mt-6 p-4 bg-gradient-to-br from-gray-900 via-purple-800 to-black rounded-lg shadow-md"
@@ -121,13 +139,14 @@ const ResponsePage = ({ crew }) => {
       );
     }
 
-    // If response is plain text, display it as plain text
+    // If it's plain text or any other format, display as-is
     return (
       <div>
-        <p className="text-gray-300">{response}</p>
+        <p className="text-gray-300">{parsedResponse}</p>
       </div>
     );
   };
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-purple-800 to-black">
