@@ -46,7 +46,7 @@ const HomePage = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 to-purple-900/70"></div>
 
       <h1 className="text-4xl font-extrabold text-white mb-4 relative z-10 animate-fade-in">
-        AI Crews Hub
+        InsightMate
       </h1>
 
       {/* Updated description showing real-world potential */}
