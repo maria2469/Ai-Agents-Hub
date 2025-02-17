@@ -1,50 +1,48 @@
 import React, { useState } from "react";
 
 const MedicalResearcherAgent = ({ onSubmit }) => {
-    const [formData, setFormData] = useState({ term: "", query: "" });
+    const [term, setTerm] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        setLoading(true);
+        await onSubmit({ term });
+        setLoading(false);
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
-            <div className="mb-6">
-                <label className="block text-gray-200 font-medium mb-1">Search Term *</label>
-                <input
-                    type="text"
-                    name="term"
-                    value={formData.term}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-700 text-white"
-                    placeholder="Enter Search Term"
-                    required
-                />
-            </div>
+        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-black to-purple-900 p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
+            <div className="space-y-6">
+                <div className="mb-6">
+                    <label className="block text-gray-200 font-semibold mb-2">Medical Term *</label>
+                    <input
+                        type="text"
+                        name="term"
+                        value={term}
+                        onChange={(e) => setTerm(e.target.value)}
+                        className="w-full px-5 py-3 bg-gray-800 text-white border-none rounded-lg focus:ring-2 focus:ring-purple-600 focus:outline-none placeholder-gray-400 transition"
+                        placeholder="Enter medical term"
+                        required
+                    />
+                </div>
 
-            <div className="mb-6">
-                <label className="block text-gray-200 font-medium mb-1">Query</label>
-                <input
-                    type="text"
-                    name="query"
-                    value={formData.query}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-700 text-white"
-                    placeholder="Enter Query"
-                />
+                <button
+                    type="submit"
+                    className={`w-full bg-purple-700 text-white font-semibold py-3 rounded-lg transition duration-300 hover:bg-purple-600 ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-105"}`}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <div className="flex justify-center items-center">
+                            <svg className="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12z"></path>
+                            </svg>
+                            Loading...
+                        </div>
+                    ) : "Submit"}
+                </button>
             </div>
-
-            <button
-                type="submit"
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-full font-semibold transition"
-            >
-                Submit
-            </button>
         </form>
     );
 };

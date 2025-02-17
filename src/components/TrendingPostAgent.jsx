@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 
-const InvestmentAdvisorAgent = ({ onSubmit }) => {
-    const [symbol, setSymbol] = useState("");
+const TrendingPostAgent = ({ onSubmit }) => {
+    const [subredditName, setSubredditName] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        await onSubmit({ symbol });
+        await onSubmit({ subreddit_name: subredditName });
         setLoading(false);
     };
 
     return (
         <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
             <div className="mb-4">
-                <label className="block text-gray-200 font-medium mb-1">Stock Symbol *</label>
+                <label className="block text-gray-200 font-medium mb-1">Subreddit *</label>
                 <input
                     type="text"
-                    name="symbol"
-                    value={symbol}
-                    onChange={(e) => setSymbol(e.target.value)}
+                    name="subreddit_name"
+                    value={subredditName}
+                    onChange={(e) => setSubredditName(e.target.value)}
                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-700 text-white"
                     required
                 />
@@ -27,7 +27,7 @@ const InvestmentAdvisorAgent = ({ onSubmit }) => {
 
             <button
                 type="submit"
-                className={`w-full bg-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-600"}`}
+                className={`w-full bg-purple-700 text-white font-semibold py-3 rounded-lg hover:bg-purple-600 transition duration-300 ease-in-out transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading}
             >
                 {loading ? (
@@ -38,10 +38,12 @@ const InvestmentAdvisorAgent = ({ onSubmit }) => {
                         </svg>
                         Loading...
                     </div>
-                ) : "Submit"}
+                ) : (
+                    "Submit"
+                )}
             </button>
         </form>
     );
 };
 
-export default InvestmentAdvisorAgent;
+export default TrendingPostAgent;
