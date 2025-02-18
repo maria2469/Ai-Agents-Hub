@@ -65,7 +65,7 @@ const ResponsePage = ({ crew }) => {
     "financial reporter": FinancialReporterAgent,
     "investment advisor": InvestmentAdvisorAgent,
     "financial query answerer": FinancialQueryAnswerAgent,
-    "trending post searcher": TrendingPostAgent,
+    "trending posts searcher": TrendingPostAgent,
     "news reporting analyst": NewsReportingAnalystAgent,
     "medical researcher": MedicalResearcherAgent,
   }[crew.name.toLowerCase()] || null; // Default to null if no match found
